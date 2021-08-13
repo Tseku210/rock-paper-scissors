@@ -1,3 +1,6 @@
+const div = document.querySelector("div")
+const p = document.createElement("p");
+
 function computerPlay() {
     let random = Math.floor(Math.random() * 3) + 1;
     if (random === 1){
@@ -8,37 +11,51 @@ function computerPlay() {
         return "Scissors";
     }
 }
+
 function playRound(playerSelection, computerSelection){
     if (playerSelection.toUpperCase() === computerSelection.toUpperCase()){
-        return `It's a tie! ${playerSelection.charAt(0).toUpperCase() + playerSelection.slice(1)} ties ${computerSelection}`;
+        p.textContent = `It's a tie! ${playerSelection} ties ${computerSelection}`;
+        div.appendChild(p);
+        return 2;
     } else if (playerSelection.toUpperCase() === "ROCK" && computerSelection.toUpperCase() === "SCISSORS"){
-        return "You win!";
+        // console.log("you win!");
+        p.textContent = "You win!";
+        div.appendChild(p);
+        return 0;
     } else if (playerSelection.toUpperCase() === "SCISSORS" && computerSelection.toUpperCase() === "PAPER"){
-        return `You win! ${playerSelection.charAt(0).toUpperCase() + playerSelection.slice(1)} beats ${computerSelection}`;
+        p.textContent = `You win! ${playerSelection} beats ${computerSelection}`
+        div.appendChild(p);
+        return 0;
     } else if (playerSelection.toUpperCase() === "PAPER" && computerSelection.toUpperCase() === "ROCK"){
-        return `You win! ${playerSelection.charAt(0).toUpperCase() + playerSelection.slice(1)} beats ${computerSelection}`
-    } else {
-        return `You lose! ${computerSelection} beats ${playerSelection.charAt(0).toUpperCase() + playerSelection.slice(1)}`
-    }
-}
-function game(){
-    playerScore = 0;
-    computerScore = 0;
-    for (let i = 0; i < 5; i++){
-        playerSelection = prompt("Choose one: ")
-        if (playRound(playerSelection, computerPlay()).includes("win!")){
-            playerScore++;
-        } else {
-            computerScore++;
-        }
-    }
-    if (playerScore > computerScore){
-        console.log("You win this game!");
-    } else if (playerScore < computerScore){
-        console.log("You lose this game!");
-    } else {
-        console.log("It's a tie!");
-    }
-}
+        p.textContent = `You win! ${ playerSelection} beats ${ computerSelection }`;
+        div.appendChild(p)
+        return 0;
 
-game()
+    } else {
+        p.textContent = `You lose! ${computerSelection} beats ${playerSelection}`;
+        div.appendChild(p);
+        return 1;
+    }
+}
+let playerScore = 0;
+let computerScore = 0;
+
+window.addEventListener("click", function(e){
+    if (playRound(e.target.innerHTML, computerPlay()) === 0){
+        playerScore += 1;
+    } else if (playRound(e.target.innerHTML, computerPlay()) === 1){
+        computerScore += 1;
+    };
+    console.log(playerScore);
+    console.log(computerScore);
+//     if (playerScore === 5 && !computerScore === 5) {
+//         console.log("You won the whole game!!");
+//     } else if (computerScore === 5 && !playerScore === 5) {
+//         console.log("You lost the whole game!!");
+//     };
+    if (playerScore >= 5){
+        p.textContent = "You win!";
+    } else if (computerScore >= 5){
+        p.textContent = "You lost!";
+    };
+});
